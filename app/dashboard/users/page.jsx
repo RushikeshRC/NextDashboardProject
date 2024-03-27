@@ -5,11 +5,11 @@ import styles from "@/app/ui/dashboard/users/users.module.css"
 import Image from "next/image"
 import Link from "next/link"
 
-const UsersPage = async () => {
+const UsersPage = async ({searchParams}) => {
 
-  const users = await fetchUsers();
-
-  console.log(users);
+  const q = searchParams?.q || "";    //the characters we are searching or if not then empty string in search field
+  const page = searchParams?.page || 1;
+  const {count, users} = await fetchUsers(q,page);  //send it as a parameter to fetch the user we are searching for from data.js file
 
     return (
       <div className={styles.container}>
@@ -59,7 +59,7 @@ const UsersPage = async () => {
             ))}
           </tbody>
         </table>
-        <Pagination/>
+        <Pagination count={count}/>
       </div>
     )
   }
